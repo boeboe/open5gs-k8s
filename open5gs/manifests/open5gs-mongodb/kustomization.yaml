@@ -1,0 +1,8 @@
+resources:
+  - 00_mongodb-clusterrole.yaml
+  - 01_mongodb-pvc.yaml
+  - 02_mongodb-configmap.yaml
+  - 03_mongodb-service.yaml
+  - 04_mongodb-statefulset.yaml
+
+namespace: open5gs

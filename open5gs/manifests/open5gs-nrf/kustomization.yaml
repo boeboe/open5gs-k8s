@@ -1,0 +1,7 @@
+resources:
+  - 00_nrf-sa.yaml
+  - 01_nrf-configmap.yaml
+  - 02_nrf-service.yaml
+  - 03_nrf-deployment.yaml
+
+namespace: open5gs

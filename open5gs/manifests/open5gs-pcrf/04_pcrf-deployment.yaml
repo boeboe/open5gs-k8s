@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: open5gs-pcrf
+  labels:
+    epc-mode: pcrf
+spec:
+  replicas: 1
+  serviceName: open5gs-pcrf
+  selector:
+    matchLabels:
+      epc-mode: pcrf
+  template:
+    metadata:
+      labels:
+        epc-mode: pcrf
+    spec:
+      containers:
+        - name: pcrf
+          image: boeboe/open5gs:v2.2.0
+          imagePullPolicy: IfNotPresent
+          command: ["open5gs-pcrfd", "-c", "/open5gs/config-map/pcrf.yaml"]
+          volumeMounts:
+          - name: open5gs-pcrf-config
+            mountPath: /open5gs/config-map/pcrf.yaml
+            subPath: "pcrf.yaml"
+          - name: open5gs-pcrf-diameter
+            mountPath: /open5gs/config-map/diameter-pcrf.conf
+            subPath: "diameter-pcrf.conf"
+      serviceAccountName: open5gs-pcrf-sa
+      volumes:
+        - name: open5gs-pcrf-config
+          configMap:
+            name: open5gs-pcrf-config
+        - name: open5gs-pcrf-diameter
+          configMap:
+            name: open5gs-pcrf-diameter            

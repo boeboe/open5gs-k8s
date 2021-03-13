@@ -1,0 +1,7 @@
+resources:
+  - 00_webui-sa.yaml
+  - 01_webui-service.yaml
+  - 02_webui-deployment.yaml
+  - 03_webui-gateway.yaml
+
+namespace: open5gs

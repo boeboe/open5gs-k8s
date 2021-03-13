@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open5gs-webui
+  labels:
+    epc-mode: open5gs-webui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      epc-mode: open5gs-webui
+  template:
+    metadata:
+      labels:
+        epc-mode: open5gs-webui
+    spec:
+      containers:
+      - name: open5gs-webui
+        #imagePullPolicy: Always
+        image: registry.gitlab.com/infinitydon/registry/open5gs-webui:v2.1.7
+        command: ["node", "server/index.js"]
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_URI
+          value: "mongodb://open5gs-mongodb/open5gs?replicaSet=rs0"
+        - name: NODE_ENV
+          value: "production"
+        - name: HOSTNAME
+          value: 0.0.0.0
+      serviceAccountName: open5gs-webui-sa

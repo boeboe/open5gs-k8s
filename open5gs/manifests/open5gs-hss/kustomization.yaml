@@ -1,0 +1,8 @@
+resources:
+  - 00_hss-sa.yaml
+  - 01_hss-configmap.yaml
+  - 02_hss-free-diameter-configmap.yaml
+  - 03_hss-service.yaml
+  - 04_hss-deployment.yaml
+
+namespace: open5gs

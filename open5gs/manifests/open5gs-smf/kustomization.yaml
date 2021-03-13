@@ -1,0 +1,8 @@
+resources:
+  - 00_smf-sa.yaml
+  - 01_smf-configmap.yaml
+  - 02_smf-free-diameter-configmap.yaml
+  - 03_smf-service.yaml
+  - 04_smf-deployment.yaml
+
+namespace: open5gs

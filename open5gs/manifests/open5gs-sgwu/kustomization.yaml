@@ -1,0 +1,7 @@
+resources:
+  - 00_sgwu-sa.yaml
+  - 01_sgwu-configmap.yaml
+  - 02_sgwu-service.yaml
+  - 03_sgwu-deployment.yaml
+
+namespace: open5gs

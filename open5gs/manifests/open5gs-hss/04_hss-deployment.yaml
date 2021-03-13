@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: open5gs-hss
+  labels:
+    epc-mode: hss
+spec:
+  replicas: 1 
+  serviceName: open5gs-hss
+  selector:
+    matchLabels:
+      epc-mode: hss
+  template:
+    metadata:
+     labels:
+        epc-mode: hss
+        level: pod
+    spec:
+      containers:
+        - name: hss
+          image: boeboe/open5gs:v2.2.0
+          imagePullPolicy: IfNotPresent
+          command: ["open5gs-hssd", "-c", "/open5gs/config-map/hss.yaml"]
+          volumeMounts:
+          - name: open5gs-hss-config
+            mountPath: /open5gs/config-map/hss.yaml
+            subPath: "hss.yaml"
+          - name: open5gs-hss-diameter
+            mountPath: /open5gs/config-map/diameter-hss.conf
+            subPath: "diameter-hss.conf"            
+      serviceAccountName: open5gs-hss-sa
+      volumes:
+      - name: open5gs-hss-config
+        configMap:
+          name: open5gs-hss-config
+      - name: open5gs-hss-diameter
+        configMap:
+          name: open5gs-hss-diameter

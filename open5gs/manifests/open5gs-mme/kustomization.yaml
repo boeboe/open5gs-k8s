@@ -1,0 +1,8 @@
+resources:
+  - 00_mme-sa.yaml
+  - 01_mme-configmap.yaml
+  - 02_mme-free-diameter-configmap.yaml
+  - 03_mme-service.yaml
+  - 04_mme-deployment.yaml
+
+namespace: open5gs

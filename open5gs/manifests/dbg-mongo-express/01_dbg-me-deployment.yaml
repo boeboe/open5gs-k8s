@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dbg-mongo-express
+  name: dbg-mongo-express
+spec:
+  selector:
+    matchLabels:
+      app: dbg-mongo-express
+  template:
+    metadata:
+      labels:
+        app: dbg-mongo-express
+    spec:
+      containers:
+      - env:
+        - name: ME_CONFIG_MONGODB_SERVER
+          value: "open5gs-mongodb.open5gs.svc.cluster.local"
+        - name: ME_CONFIG_MONGODB_ENABLE_ADMIN
+          value: "true"
+        - name: ME_CONFIG_BASICAUTH_USERNAME
+          value: "admin"
+        - name: ME_CONFIG_BASICAUTH_PASSWORD
+          value: "open5gs"
+        image: mongo-express:latest
+        imagePullPolicy: Always
+        name: dbg-mongo-express
+        ports:
+        - containerPort: 8081
+          protocol: TCP
+      restartPolicy: Always

@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: open5gs-sgwc
+  labels:
+    epc-mode: sgwc
+spec:
+  replicas: 1
+  serviceName: open5gs-sgwc
+  selector:
+    matchLabels:
+      epc-mode: sgwc
+  template:
+    metadata:
+      labels:
+        epc-mode: sgwc
+    spec:
+      containers:
+        - name: sgwc
+          image: boeboe/open5gs:v2.2.0
+          imagePullPolicy: IfNotPresent
+          command: ["open5gs-sgwcd", "-c", "/open5gs/config-map/sgwc.yaml"]
+          volumeMounts:
+            - name: open5gs-sgwc-config
+              mountPath: /open5gs/config-map/sgwc.yaml
+              subPath: "sgwc.yaml"
+      serviceAccountName: open5gs-sgwc-sa
+      volumes:
+        - name: open5gs-sgwc-config
+          configMap:
+            name: open5gs-sgwc-config

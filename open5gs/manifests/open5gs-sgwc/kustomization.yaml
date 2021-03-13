@@ -1,0 +1,7 @@
+resources:
+  - 00_sgwc-sa.yaml
+  - 01_sgwc-configmap.yaml
+  - 02_sgwc-service.yaml
+  - 03_sgwc-deployment.yaml
+
+namespace: open5gs

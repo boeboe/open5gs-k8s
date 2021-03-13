@@ -1,0 +1,7 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: open5gs-mongodb-config
+data:
+  mongo_initdb_database: "open5gs"

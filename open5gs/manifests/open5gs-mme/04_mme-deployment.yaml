@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: open5gs-mme
+  labels:
+    epc-mode: mme
+spec:
+  replicas: 1
+  serviceName: open5gs-mme
+  selector:
+    matchLabels:
+      epc-mode: mme
+  template:
+    metadata:
+      labels:
+        epc-mode: mme
+    spec:
+      containers:
+        - name: mme
+          image: boeboe/open5gs:v2.2.0
+          imagePullPolicy: Always
+          command: ["open5gs-mmed", "-c", "/open5gs/config-map/mme.yaml"]
+          volumeMounts:
+          - name: open5gs-mme-config
+            mountPath: /open5gs/config-map/mme.yaml
+            subPath: "mme.yaml"
+          - name: open5gs-mme-diameter
+            mountPath: /open5gs/config-map/diameter-mme.conf
+            subPath: "diameter-mme.conf"             
+      serviceAccountName: open5gs-mme-sa
+      volumes:
+        - name: open5gs-mme-config
+          configMap:
+            name: open5gs-mme-config
+        - name: open5gs-mme-diameter
+          configMap:
+            name: open5gs-mme-diameter            

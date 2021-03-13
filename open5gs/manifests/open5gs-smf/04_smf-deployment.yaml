@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: open5gs-smf
+  labels:
+    epc-mode: smf
+spec:
+  replicas: 1
+  serviceName: "open5gs-smf"
+  selector:
+    matchLabels:
+      epc-mode: smf
+  template:
+    metadata:
+      labels:
+        epc-mode: smf
+    spec:
+      containers:
+        - name: smf
+          image: boeboe/open5gs:v2.2.0
+          imagePullPolicy: IfNotPresent
+          command: ["open5gs-smfd", "-c", "/open5gs/config-map/smf.yaml"]
+          volumeMounts:
+          - name: open5gs-smf-config
+            mountPath: /open5gs/config-map/smf.yaml
+            subPath: "smf.yaml"
+          - name: open5gs-smf-diameter
+            mountPath: /open5gs/config-map/diameter-smf.conf
+            subPath: "diameter-smf.conf"
+      serviceAccountName: open5gs-smf-sa
+      volumes:
+        - name: open5gs-smf-config
+          configMap:
+            name: open5gs-smf-config
+        - name: open5gs-smf-diameter
+          configMap:
+            name: open5gs-smf-diameter            

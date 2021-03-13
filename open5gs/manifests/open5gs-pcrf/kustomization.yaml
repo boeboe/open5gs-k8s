@@ -1,0 +1,8 @@
+resources:
+  - 00_pcrf-sa.yaml
+  - 01_pcrf-configmap.yaml
+  - 02_pcrf-free-diameter-configmap.yaml
+  - 03_pcrf-service.yaml
+  - 04_pcrf-deployment.yaml
+
+namespace: open5gs

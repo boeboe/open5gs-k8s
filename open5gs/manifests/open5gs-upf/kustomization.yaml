@@ -1,0 +1,7 @@
+resources:
+  - 00_upf-sa.yaml
+  - 01_upf-configmap.yaml
+  - 02_upf-service.yaml
+  - 03_upf-deployment.yaml
+
+namespace: open5gs

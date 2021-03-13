@@ -1,0 +1,30 @@
+---
+apiVersion: policy.aspenmesh.io/v1alpha1
+kind: Application
+metadata:
+  name: open5gs-webui
+spec:
+  inbound:
+    ports:
+      - number: 5000
+        protocol: HTTP
+        paths:
+          - expose:
+              public: true
+              jwtSecured: false
+            uri:
+              prefix: /
+---
+apiVersion: policy.aspenmesh.io/v1alpha1
+kind: SecureIngress
+metadata:
+  name: webui
+spec:
+  domainName: "open5gs-webui.udf-demo.org"
+  exposedApplications:
+    - applicationReference:
+        name: open5gs-webui
+        namespace: open5gs
+      serviceReference:
+        name: open5gs-webui
+        namespace: open5gs

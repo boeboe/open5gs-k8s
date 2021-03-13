@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: open5gs-mongodb
+  labels:
+    app: open5gs-mongodb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: open5gs-mongodb
+spec:
+  serviceName: open5gs-mongodb
+  selector:
+    matchLabels:
+      app: open5gs-mongodb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: open5gs-mongodb
+    spec:
+      serviceAccountName: open5gs-mongodb
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      automountServiceAccountToken: true
+      containers:
+        - name: mongodb
+          image: mongo:4.4.4
+          command:
+            - mongod
+          args:
+            - "--replSet=rs0"
+            - "--bind_ip=0.0.0.0"
+          ports:
+            - containerPort: 27017
+              name: mongodb
+          env:
+            - name: MONGO_INITDB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: open5gs-mongodb-config
+                  key: mongo_initdb_database
+          volumeMounts:
+            - name: open5gs-mongodb-pv
+              mountPath: /data/db
+        - name: mongodb-sidecar
+          image: morphy/k8s-mongo-sidecar
+          env:
+            - name: KUBERNETES_POD_LABELS
+              value: "app=open5gs-mongodb"
+            - name: KUBERNETES_SERVICE_NAME
+              value: "open5gs-mongodb"
+      volumes:
+      - name: open5gs-mongodb-pv
+        persistentVolumeClaim:
+          claimName: open5gs-mongodb-pvc

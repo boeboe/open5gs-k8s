@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: open5gs-sgwu
+  labels:
+    epc-mode: sgwu
+spec:
+  replicas: 1
+  serviceName: open5gs-sgwu
+  selector:
+    matchLabels:
+      epc-mode: sgwu
+  template:
+    metadata:
+      labels:
+        epc-mode: sgwu
+    spec:
+      containers:
+        - name: sgwu
+          image: boeboe/open5gs:v2.2.0
+          imagePullPolicy: IfNotPresent
+          command: ["open5gs-sgwud", "-c", "/open5gs/config-map/sgwu.yaml"]
+          volumeMounts:
+            - name: open5gs-sgwu-config
+              mountPath: /open5gs/config-map/sgwu.yaml
+              subPath: "sgwu.yaml"
+      serviceAccountName: open5gs-sgwu-sa
+      volumes:
+        - name: open5gs-sgwu-config
+          configMap:
+            name: open5gs-sgwu-config
